@@ -19,13 +19,13 @@ public class Main {
         System.out.println("6. Listar libros disponibles");
         System.out.println("7. Listar autores");
         System.out.println("8. Mostrar los libros de cada autor");
-        System.out.println("9. Autor con mas libros publicados");
 
+        System.out.println("9. Autor con mas libros publicados"); //toDO
         System.out.println("10. Autor más leído o con más usuarios"); //toDO
         System.out.println("11. Libro más leído");//toDO
         System.out.println("12. Usuario con más préstamos");//toDO
         System.out.println("13. mostrar los usuarios en orden alfabético");//toDO
-        System.out.println("14. Salir 👋");//toDO
+        System.out.println("14. Salir 👋");
     }
 
 
@@ -133,10 +133,10 @@ public class Main {
 
                     break;
                 case 6: //listar libros disponibles
-                    for (int i = 0; i < libros.size(); i++) {
-                        if (libros.get(i).isDisponible()) {
-                            System.out.println(libros.get(i).getTitulo());
-                            System.out.println(libros.get(i).getAutor().getNombre());
+                    for (Libro value : libros) {
+                        if (value.isDisponible()) {
+                            System.out.println(value.getTitulo());
+                            System.out.println(value.getAutor().getNombre());
                             System.out.println(" ");
                         }
                     }
@@ -151,22 +151,35 @@ public class Main {
                 case 8: //libros de cada autor
                     for (Autor autor : autores) {
                         System.out.println("Nombre: " + autor.getNombre());
-                        for (int i = 0; i < libros.size(); i++) {
-                            if (autor.getId() == libros.get(i).getAutor().getId()) {
-                                System.out.println("Libro: " + libros.get(i).getTitulo());
+                        for (Libro libro : libros) {
+                            if (autor.getId() == libro.getAutor().getId()) {
+                                System.out.println("Libro: " + libro.getTitulo());
                             }
                         }
                     }
                     break;
-                case 9:
+                case 9: // autor con más libros publicados
+                    int cantidadLibros = 0;
+                    int mayorCantidadLibros = autores.get(0).getLibros().size();
+                    Autor autormaslibros = autores.get(0);
+                    for (Autor autor : autores) {
+                        cantidadLibros = autor.getLibros().size();
+                        if (cantidadLibros > mayorCantidadLibros) {
+                            mayorCantidadLibros = cantidadLibros;
+                            autormaslibros = autor;
+                        }
+                    }
+                    System.out.println("Autor : "+ autormaslibros.getNombre());
+                    System.out.println("Cantidad libros: " + mayorCantidadLibros);
+
                     break;
-                case 10:
+                case 10: // autor mas leído o con más usuarios
                     break;
-                case 11:
+                case 11: //libro más leído
                     break;
-                case 12:
+                case 12://Usuario con más préstamos
                     break;
-                case 13:
+                case 13: // mostrar los usuarios en orden alfabético
                     break;
                 case 14: //chao con adios
                     //salir = true;

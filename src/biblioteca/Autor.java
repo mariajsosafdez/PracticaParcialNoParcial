@@ -8,10 +8,7 @@ public class Autor {
     private String nombre;
     private String pais;
     private ArrayList<Libro> libros = new ArrayList<>();
-/*
-Hacer contar la cantidad de libros
-Mostrar todos los libros del autor
- */
+
     public Autor() {
         this.id = ++contador;
     }
