@@ -10,9 +10,9 @@ public class Libro {
     private boolean disponible;
     private Autor autor;
     public ArrayList<LibroUsuario> prestamo = new ArrayList<>();
+    public int vecesPrestado = 0;
 
-    public Libro(long id, String titulo, String genero, int year, boolean disponible,
-                 Autor autor) {
+    public Libro(long id, String titulo, String genero, int year, boolean disponible, Autor autor) {
         this.id = id;
         this.titulo = titulo;
         this.genero = genero;
@@ -64,10 +64,20 @@ public class Libro {
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
-    public Autor getAutor(){
+
+    public int getVecesPrestado() {
+        return vecesPrestado;
+    }
+
+    public void setVecesPrestado() {
+        this.vecesPrestado++;
+    }
+
+    public Autor getAutor() {
         return this.autor;
     }
-    public void setAutor(Autor autor){
+
+    public void setAutor(Autor autor) {
         this.autor = autor;
     }
 

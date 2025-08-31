@@ -15,17 +15,18 @@ public class Main {
         System.out.println("2. Ingresar libro");
         System.out.println("3. Ingresar usuario");
         System.out.println("4. Ingresar préstamo");
-        System.out.println("5. Listar usuarios");
-        System.out.println("6. Listar libros disponibles");
-        System.out.println("7. Listar autores");
-        System.out.println("8. Mostrar los libros de cada autor");
-        System.out.println("9. Autor con mas libros publicados");
+        System.out.println("5. Devolver libro"); //toDo
+        System.out.println("6. Listar usuarios");
+        System.out.println("7. Listar libros disponibles");
+        System.out.println("8. Listar autores");
+        System.out.println("9. Mostrar los libros de cada autor");
+        System.out.println("10. Autor con mas libros publicados");
 
-        System.out.println("10. Autor más leído o con más usuarios"); //toDO
-        System.out.println("11. Libro más leído");//toDO
-        System.out.println("12. Usuario con más préstamos");//toDO
-        System.out.println("13. mostrar los usuarios en orden alfabético");//toDO
-        System.out.println("14. Salir 👋");
+        System.out.println("11. Autor más leído o con más usuarios"); //toDO
+        System.out.println("12. Libro más leído");//toDO
+        System.out.println("13. Usuario con más préstamos");//toDO
+        System.out.println("14. mostrar los usuarios en orden alfabético");//toDO
+        System.out.println("15. Salir 👋");
     }
 
 
@@ -96,7 +97,6 @@ public class Main {
                     System.out.println("Ingrese la cedula del usuario");
                     long idUs = Long.parseLong(sc.nextLine());
 
-
                     Libro l = null;
                     Usuario u = null;
                     for (Libro libro : libros) { //para cada libro en libros[], la variable libro sirve como índice para recorrer el arreglo, cabe aclarar que no permite modificaciones
@@ -117,12 +117,36 @@ public class Main {
                     }
                     System.out.println("Ingrese el codigo del préstamo");
                     long idPrestamo = Long.parseLong(sc.nextLine());
-                    String fecha = DateTimeFormatter.ofPattern("dd/MM/yyyy").
-                            format(LocalDate.now());
-                    LibroUsuario prestamo = new LibroUsuario(idPrestamo, fecha, l, u);
-                    prestamos.add(prestamo);
+                    String fecha = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now());
+                    LibroUsuario prs = new LibroUsuario(idPrestamo, fecha, l, u);
+                    prestamos.add(prs);
+                    //for (Libro libro :libros){
+                    //  if (l.getId() == libro.getId()){
+                    l.setVecesPrestado();
+                    //}
+                    //}
                     break;
-                case 5: //listar usuarios
+                case 5: //devolver libro
+                    System.out.println("Ingrese el codigo del prestamo que desea desprestar 🤗");
+                    long idDesPrestamo = Long.parseLong(sc.nextLine());
+                    LibroUsuario p = null;
+                    for (LibroUsuario prestamo : prestamos) {
+                        if (prestamo.getCodigo() == idDesPrestamo) {
+                            p = prestamo;
+                        }
+                    }
+                    if (p == null) {
+                        System.out.println("Prestamo no existente, pendejo");
+                        break;
+                    }
+                    for (Libro libro : libros) {
+                        if (libro.getId() == p.getLibro().getId()) {
+                            prestamos.remove(p); //toDo PREGUNTAR SOBRE LA ELIMINACIÓN DE LOS PRESTAMOS QUE ESTÁN DENTRO DE LAS CLASES
+                            libro.setDisponible(true);
+                        }
+                    }
+                    break;
+                case 6: //listar usuarios
 
                     for (Usuario usuario : usuarios) {
                         System.out.println("Identificación: " + usuario.getId());
@@ -132,7 +156,7 @@ public class Main {
                     }
 
                     break;
-                case 6: //listar libros disponibles
+                case 7: //listar libros disponibles
                     for (Libro value : libros) {
                         if (value.isDisponible()) {
                             System.out.println(value.getTitulo());
@@ -141,14 +165,14 @@ public class Main {
                         }
                     }
                     break;
-                case 7: //listar autores
+                case 8: //listar autores
                     for (Autor autor : autores) {
                         System.out.println("Codigo: " + autor.getId());
                         System.out.println("Autor: " + autor.getNombre());
                         System.out.println(" ");
                     }
                     break;
-                case 8: //libros de cada autor
+                case 9: //libros de cada autor
                     for (Autor autor : autores) {
                         System.out.println("Nombre: " + autor.getNombre());
                         for (Libro libro : autor.getLibros()) {
@@ -156,7 +180,7 @@ public class Main {
                         }
                     }
                     break;
-                case 9: // autor con más libros publicados
+                case 10: // autor con más libros publicados
                     int cantidadLibros = 0;
                     int mayorCantidadLibros = autores.get(0).getLibros().size();
                     Autor autormaslibros = autores.get(0);
@@ -171,15 +195,16 @@ public class Main {
                     System.out.println("Cantidad libros: " + mayorCantidadLibros);
 
                     break;
-                case 10: // autor mas leído o con más usuarios
+                case 11: // autor mas leído o con más usuarios
                     break;
-                case 11: //libro más leído
+                case 12: //libro más leído (con más préstamos)
+
                     break;
-                case 12://Usuario con más préstamos
+                case 13://Usuario con más préstamos
                     break;
-                case 13: // mostrar los usuarios en orden alfabético
+                case 14: // mostrar los usuarios en orden alfabético
                     break;
-                case 14: //chao con adios
+                case 15: //chao con adios
                     //salir = true;
                     System.out.println("Chao 🗿🤙");
                     System.exit(0);
