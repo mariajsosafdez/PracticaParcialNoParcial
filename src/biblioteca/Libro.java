@@ -81,5 +81,8 @@ public class Libro {
         this.autor = autor;
     }
 
-    //cosa
+    public ArrayList<LibroUsuario> getPrestamo() {
+        return prestamo;
+    }
+//cosa
 }

@@ -39,10 +39,11 @@ public class Autor {
         this.pais = pais;
     }
 
-    public void addLibro(Libro libro){
+    public void addLibro(Libro libro) {
         this.libros.add(libro);
     }
-    public ArrayList<Libro> getLibros(){
+
+    public ArrayList<Libro> getLibros() {
         return this.libros;
     }
 

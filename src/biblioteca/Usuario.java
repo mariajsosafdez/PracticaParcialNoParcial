@@ -7,7 +7,7 @@ public class Usuario {
     private String nombre;
     private String correo;
     private String telefono;
-    public ArrayList<LibroUsuario> prestamo= new ArrayList<>();
+    public ArrayList<LibroUsuario> prestamo = new ArrayList<>();
 
     public Usuario(long id, String nombre, String correo, String telefono) {
         this.id = id;
@@ -46,6 +46,10 @@ public class Usuario {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public ArrayList<LibroUsuario> getPrestamo() {
+        return prestamo;
     }
     //cosa
 }

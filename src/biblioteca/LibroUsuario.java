@@ -19,6 +19,7 @@ public class LibroUsuario {
         this.usuario.prestamo.add(this);
 
     }
+
     public long getCodigo() {
         return codigo;
     }

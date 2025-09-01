@@ -5,7 +5,9 @@ import biblioteca.Usuario;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class Main {
@@ -15,17 +17,16 @@ public class Main {
         System.out.println("2. Ingresar libro");
         System.out.println("3. Ingresar usuario");
         System.out.println("4. Ingresar préstamo");
-        System.out.println("5. Devolver libro"); //toDo
+        System.out.println("5. Devolver libro");
         System.out.println("6. Listar usuarios");
         System.out.println("7. Listar libros disponibles");
         System.out.println("8. Listar autores");
         System.out.println("9. Mostrar los libros de cada autor");
         System.out.println("10. Autor con mas libros publicados");
-
-        System.out.println("11. Autor más leído o con más usuarios"); //toDO
-        System.out.println("12. Libro más leído");//toDO
-        System.out.println("13. Usuario con más préstamos");//toDO
-        System.out.println("14. mostrar los usuarios en orden alfabético");//toDO
+        System.out.println("11. Autor más leído o con más usuarios");
+        System.out.println("12. Libro más leído");
+        System.out.println("13. Usuario con más préstamos");
+        System.out.println("14. mostrar los usuarios en orden alfabético");
         System.out.println("15. Salir 👋");
     }
 
@@ -117,14 +118,11 @@ public class Main {
                     }
                     System.out.println("Ingrese el codigo del préstamo");
                     long idPrestamo = Long.parseLong(sc.nextLine());
-                    String fecha = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now());
+                    String fecha = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now()); //toDo preguntar como se ponía esto
                     LibroUsuario prs = new LibroUsuario(idPrestamo, fecha, l, u);
                     prestamos.add(prs);
-                    //for (Libro libro :libros){
-                    //  if (l.getId() == libro.getId()){
                     l.setVecesPrestado();
-                    //}
-                    //}
+
                     break;
                 case 5: //devolver libro
                     System.out.println("Ingrese el codigo del prestamo que desea desprestar 🤗");
@@ -141,8 +139,11 @@ public class Main {
                     }
                     for (Libro libro : libros) {
                         if (libro.getId() == p.getLibro().getId()) {
-                            prestamos.remove(p); //toDo PREGUNTAR SOBRE LA ELIMINACIÓN DE LOS PRESTAMOS QUE ESTÁN DENTRO DE LAS CLASES
+                            prestamos.remove(p);
                             libro.setDisponible(true);
+                            //toDo PREGUNTAR SOBRE LA ELIMINACIÓN DE LOS PRESTAMOS QUE ESTÁN DENTRO DE LAS CLASES
+                            p.getUsuario().getPrestamo().remove(p);
+                            p.getLibro().getPrestamo().remove(p);
                         }
                     }
                     break;
@@ -181,31 +182,65 @@ public class Main {
                     }
                     break;
                 case 10: // autor con más libros publicados
-                    int cantidadLibros = 0;
-                    int mayorCantidadLibros = autores.get(0).getLibros().size();
-                    Autor autormaslibros = autores.get(0);
+                    int cantidadLibros;
+                    int mayorCantidadLibros = autores.getFirst().getLibros().size();
+                    Autor autorMasLibros = autores.getFirst();
                     for (Autor autor : autores) {
                         cantidadLibros = autor.getLibros().size();
                         if (cantidadLibros > mayorCantidadLibros) {
                             mayorCantidadLibros = cantidadLibros;
-                            autormaslibros = autor;
+                            autorMasLibros = autor;
                         }
                     }
-                    System.out.println("Autor : " + autormaslibros.getNombre());
+                    System.out.println("Autor : " + autorMasLibros.getNombre());
                     System.out.println("Cantidad libros: " + mayorCantidadLibros);
 
                     break;
-                case 11: // autor mas leído o con más usuarios
+                case 11: // autor más leído o con más usuarios (autor con más libros prestados)
+                    Autor autorMasLeido = autores.getFirst(); //toDo este weak warning que chucha ¿
+                    int mayorLibrosPrestados = 0;
+                    for (Autor autor : autores) {
+                        int librosPrestados = 0;
+                        for (Libro libro : libros) {
+                            if (!libro.isDisponible()) {
+                                librosPrestados++;
+                            }
+                        }
+                        if (librosPrestados > mayorLibrosPrestados) {
+                            mayorLibrosPrestados = librosPrestados;
+                            autorMasLeido = autor;
+                        }
+                    }
+                    System.out.println("El autor más leído fue :" + autorMasLeido.getNombre());
                     break;
                 case 12: //libro más leído (con más préstamos)
-
+                    Libro libroMasLeido = libros.getFirst();
+                    for (Libro libro : libros) {
+                        if (libro.getVecesPrestado() > libroMasLeido.getVecesPrestado()) {
+                            libroMasLeido = libro;
+                        }
+                    }
+                    System.out.println("El libro más leído fue :" + libroMasLeido.getTitulo() + " con " + libroMasLeido.getVecesPrestado() + " préstamos");
                     break;
                 case 13://Usuario con más préstamos
+                    Usuario usuarioMasPrestamos = usuarios.getFirst();
+                    for (Usuario usuario : usuarios) {
+                        if (usuario.getPrestamo().size() > usuarioMasPrestamos.getPrestamo().size()) {
+                            usuarioMasPrestamos = usuario;
+                        }
+                    }
+                    System.out.println("El usuario con más préstamos fue: " + usuarioMasPrestamos.getNombre() + " con " + usuarioMasPrestamos.getPrestamo().size() + " préstamos");
                     break;
                 case 14: // mostrar los usuarios en orden alfabético
+                    ArrayList<Usuario> usuOrd = new ArrayList<>(usuarios);
+                    usuOrd.sort(Comparator.comparing(Usuario::getNombre));
+
+                    System.out.println("Usuarios en orden alfabético");
+                    for (Usuario usuario :usuOrd){
+                        System.out.println(usuario);
+                    }
                     break;
                 case 15: //chao con adios
-                    //salir = true;
                     System.out.println("Chao 🗿🤙");
                     System.exit(0);
                 default:
