@@ -30,7 +30,6 @@ public class Main {
         System.out.println("15. Salir 👋");
     }
 
-
     public static void main(String[] args) {
         ArrayList<Autor> autores = new ArrayList<>();
         ArrayList<Libro> libros = new ArrayList<>();
@@ -69,6 +68,12 @@ public class Main {
                     } else {
                         System.out.println("Ingrese el codigo del libro:");
                         long idLibro = Long.parseLong(sc.nextLine());
+                        for (Libro libro : libros) {
+                            if (idLibro == libro.getId()) {
+                                System.out.println("Ese libro ya existe");
+                                System.out.println("bobote");
+                            }
+                        }
                         System.out.println("Ingrese el nombre del libro:");
                         String nombreLibro = sc.nextLine();
                         System.out.println("Ingrese el genero del libro:");
@@ -83,6 +88,12 @@ public class Main {
                 case 3: //ingresar usuario
                     System.out.println("Ingrese el id del usuario");
                     long idUsuario = Long.parseLong(sc.nextLine());
+                    for (Usuario usuario : usuarios) {
+                        if (idUsuario == usuario.getId()) {
+                            System.out.println("Ese usuario ya existe");
+                            System.out.println("bobote");
+                        }
+                    }
                     System.out.println("Ingrese el nombre del usuario:");
                     String nombreUsuario = sc.nextLine();
                     System.out.println("Ingrese el correo del usuario");
@@ -116,8 +127,18 @@ public class Main {
                         System.out.println("El libro o usuario no existen");
                         break;
                     }
+                    if (!l.isDisponible()) {
+                        System.out.println("El libro actual no está disponible");
+                        break;
+                    }
                     System.out.println("Ingrese el codigo del préstamo");
                     long idPrestamo = Long.parseLong(sc.nextLine());
+                    for (LibroUsuario prestamo : prestamos) {
+                        if (idPrestamo == prestamo.getCodigo()) {
+                            System.out.println("Ese prestamo ya existe");
+                            System.out.println("bobote");
+                        }
+                    }
                     String fecha = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now()); //toDo preguntar como se ponía esto
                     LibroUsuario prs = new LibroUsuario(idPrestamo, fecha, l, u);
                     prestamos.add(prs);
@@ -160,8 +181,7 @@ public class Main {
                 case 7: //listar libros disponibles
                     for (Libro value : libros) {
                         if (value.isDisponible()) {
-                            System.out.println(value.getTitulo());
-                            System.out.println(value.getAutor().getNombre());
+                            System.out.println(value.getTitulo() + " de " + value.getAutor().getNombre());
                             System.out.println(" ");
                         }
                     }
@@ -170,6 +190,7 @@ public class Main {
                     for (Autor autor : autores) {
                         System.out.println("Codigo: " + autor.getId());
                         System.out.println("Autor: " + autor.getNombre());
+                        System.out.println("Cantidad de libros: " + autor.getLibros().size());
                         System.out.println(" ");
                     }
                     break;
@@ -236,8 +257,8 @@ public class Main {
                     usuOrd.sort(Comparator.comparing(Usuario::getNombre));
 
                     System.out.println("Usuarios en orden alfabético");
-                    for (Usuario usuario :usuOrd){
-                        System.out.println(usuario);
+                    for (Usuario usuario : usuOrd) {
+                        System.out.println(usuario.getNombre());
                     }
                     break;
                 case 15: //chao con adios
